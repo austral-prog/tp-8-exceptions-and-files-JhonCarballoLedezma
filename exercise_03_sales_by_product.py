@@ -1,5 +1,5 @@
 # Ejercicio 3 - Ventas por producto
-
+import os
 
 def read_sales(filename):
     """
@@ -31,7 +31,24 @@ def read_sales(filename):
             "producto2": [200.0],
         }
     """
-    pass  # Reemplazar con tu implementación
+    if not os.path.exists(filename):
+        raise FileNotFoundError("No existe el archivo")
+    
+    with open(filename , "r") as file:
+        content = file.read()
+        content = content.strip()
+        pares = content.split(";")
+        sales_dict = {}
+        for par in pares:
+            if par != "":
+                venta = par.split(":") #con esto podemos separar |producto : 25$| en 2  como producto , 25$
+                producto = venta[0]
+                monto = float(venta[1])
+                if producto in sales_dict:
+                    sales_dict[producto].append(monto)
+                else:
+                    sales_dict[producto] = [monto]
+        return sales_dict
 
 
 def process_sales(data):
@@ -53,4 +70,8 @@ def process_sales(data):
         process_sales({"producto1": [100.0, 150.0]})
         # imprime: "producto1: ventas totales $250.00, promedio $125.00"
     """
-    pass  # Reemplazar con tu implementación
+    #pass  # Reemplazar con tu implementación
+    for producto , montos in data.items():
+        total = sum(montos)
+        promedio = total / len(montos)
+        print(f"{producto}: ventas totales ${total:.2f}, promedio ${promedio:.2f}")

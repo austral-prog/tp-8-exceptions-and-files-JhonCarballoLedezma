@@ -1,6 +1,6 @@
 # Ejercicio 2 - Contar palabras en un archivo
 
-
+import os
 def count_words(filename):
     """
     Lee un archivo y retorna un diccionario palabra -> cantidad.
@@ -29,3 +29,22 @@ def count_words(filename):
         count_words("texto.txt") -> {"hola": 2, "mundo": 2, "python": 1}
     """
     pass  # Reemplazar con tu implementación
+    #Lanzar FileNotFoundError con raise
+
+    if not os.path.exists(filename):
+        raise FileNotFoundError ("No existe el archivo")
+    
+    words_dict = {}
+    with open(filename,"r") as file :
+        for line in file:
+            line = line.strip() #limpia los espacios
+            line = line.lower()
+            words_list = line.split()
+            print(words_list)
+            for word in words_list:
+                if word in words_dict:
+                    words_dict[word] += 1
+                else:
+                    words_dict[word] = 1
+        return words_dict
+

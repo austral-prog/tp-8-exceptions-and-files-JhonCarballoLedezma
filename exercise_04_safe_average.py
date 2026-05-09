@@ -1,5 +1,5 @@
 # Ejercicio 4 - Promedio seguro con manejo de errores
-
+import os
 
 def safe_average(filename):
     """
@@ -28,4 +28,22 @@ def safe_average(filename):
         # archivo contiene: "10\n20\nno_es_un_numero\n30\n"
         safe_average("numeros.txt") -> 20.0
     """
-    pass  # Reemplazar con tu implementación
+    #pass  # Reemplazar con tu implementación
+    if not os.path.exists(filename):
+        raise FileNotFoundError ("No existe el archivo")
+    numeros_validos = [] #generamos una lista almacenar cada iteración
+    with open (filename , "r") as file:
+        for line in file:
+            line = line.strip()
+            if not line:
+                continue
+
+            try:
+                valor = float(line)
+                numeros_validos.append(valor)
+            except ValueError:
+                continue
+    
+    if len(numeros_validos) == 0:
+        raise ValueError("numero no valido")
+    return sum(numeros_validos) / len(numeros_validos)
